@@ -21,28 +21,27 @@ public class Client extends Thread {
 	public void run() {
 		
 		try {
-		socketClient= new Socket("127.0.0.1",5555);
-	    out = new ObjectOutputStream(socketClient.getOutputStream());
-	    in = new ObjectInputStream(socketClient.getInputStream());
-	    socketClient.setTcpNoDelay(true);
+			socketClient= new Socket("127.0.0.1",5555);
+			out = new ObjectOutputStream(socketClient.getOutputStream());
+			in = new ObjectInputStream(socketClient.getInputStream());
+			socketClient.setTcpNoDelay(true);
 		}
 		catch(Exception e) {}
 		
 		while(true) {
 			 
 			try {
-			String message = in.readObject().toString();
-			callback.accept(message);
+				BaccaratInfo clientInfo = (BaccaratInfo)in.readObject();
 			}
 			catch(Exception e) {}
 		}
 	
     }
 	
-	public void send(String data) {
+	public void send(BaccaratInfo clientInfo) {
 		
 		try {
-			out.writeObject(data);
+			out.writeObject(clientInfo);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
