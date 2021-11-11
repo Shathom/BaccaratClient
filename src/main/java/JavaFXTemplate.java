@@ -29,14 +29,11 @@ public class JavaFXTemplate extends Application {
 	
 	private TextField portNumber, ipAddress, bettingAmount, results, currentWinnings;
 	private Button connectToServer, exitBetting, startGame, startNewGame, exitGame, exit;
-    private Text resultsPmpt, currentWinningsPmpt, playerPmpt, bankerPmpt, bettingAmountPmpt, 
-    bettingTypePmpt, portNumberPmpt, ipAddressPmpt;
+    private Text resultsPmpt, currentWinningsPmpt, playerPmpt, bankerPmpt, bettingAmountPmpt, bettingTypePmpt, portNumberPmpt, ipAddressPmpt;
 	private HashMap<String, Scene> sceneMap;
 	private HashMap<String, String> cardImages;
 	private HBox portAndIP, connectAndExit, bettingAmountAndRadio, resultsAndButtons, playerCards, bankerCards, bothPlayers;
-	private VBox textAndBut, radioAndField, startAndExit, bettingAmountAndField,
-	vBoxBettingScene, startNewGameAndExit, resultsAndCurrentWinnings, 
-	ipPromAndText, portPromAndText, resultsPrmp, currentWinningsPrmp, info, pCards, bCards, gScene;
+	private VBox textAndBut, radioAndField, startAndExit, bettingAmountAndField, vBoxBettingScene, startNewGameAndExit, resultsAndCurrentWinnings, ipPromAndText, portPromAndText, resultsPrmp, currentWinningsPrmp, info, pCards, bCards, gScene;
 	private Client clientConnection;
 	private RadioButton player, banker, draw;
 	private ToggleGroup radioButtons;
@@ -46,9 +43,7 @@ public class JavaFXTemplate extends Application {
 	PauseTransition pauseforPlayerDraw = new PauseTransition(Duration.seconds(3));
 	PauseTransition pauseforBankerDraw = new PauseTransition(Duration.seconds(3));
 	PauseTransition pauseforEnteringGame = new PauseTransition(Duration.seconds(3));
-	private EventHandler<ActionEvent> startnewGameHandler, exitGameHandler,
-	leaveServerhandler, startGameHandler,
-	connectToServerHandler;
+	private EventHandler<ActionEvent> startnewGameHandler, exitGameHandler, leaveServerhandler, startGameHandler, connectToServerHandler;
 	private Image player1, player2, banker1, banker2;
 	private ImageView player1View, player2View, banker1View, banker2View;
 	public BaccaratInfo data;
@@ -61,28 +56,10 @@ public class JavaFXTemplate extends Application {
 	public void start(Stage primaryStage) throws Exception {
 	
 		primaryStage.setTitle("Baccarat Client");
-		
-		this.connectToServer = new Button("Connect To Server");
-		
-		// when player presses a button, you would send info from textfields and create an instance
-		// of bainfo class and pass innto the send funciton
-		
-		
-		// call send here?????
-		this.connectToServer.setOnAction(e-> { primaryStage.setScene(sceneMap.get("bettingScene"));
-			                                   clientConnection = new Client(data->{
-							Platform.runLater(()->{results.setText(data.toString());
-											});
-							});
-							
-						clientConnection.start();
-		});
-		
-		
-		
+
 		
 		sceneMap = new HashMap<String, Scene>();
-		sceneMap.put("portAndIDScene",  createPortIDScene());
+		sceneMap.put("portAndIDScene",  createPortIDScene(primaryStage));
 		sceneMap.put("gameScene",  createGameScene());
 		sceneMap.put("bettingScene",  createBettingScene());
 		
@@ -105,7 +82,7 @@ public class JavaFXTemplate extends Application {
 	}
 	
 	
-	public Scene createPortIDScene() {
+	public Scene createPortIDScene(Stage primaryStage) {
 		
 		BorderPane pane = new BorderPane();
 		pane.setPadding(new Insets(70));
@@ -146,8 +123,26 @@ public class JavaFXTemplate extends Application {
 
 		pane.setCenter(textAndBut);
 		
-		exit.setOnAction(e ->Platform.exit());
+		connectToServerHandler = new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				int portNum = Integer.parseInt(portNumber.getText());
+				primaryStage.setScene(sceneMap.get("bettingScene"));
+                clientConnection = new Client(data->{
+                	Platform.runLater(()->{results.setText(data.toString());
+                	});
+                }, portNum, ipAddress.getText());
 
+                clientConnection.start();
+              };
+
+		};
+		
+		
+		connectToServer.setOnAction(connectToServerHandler);
+		
+		exit.setOnAction(e ->Platform.exit());
+        
+		
 		
 		Scene scene = new Scene(pane, 1000, 800);
 		scene.getRoot().setStyle("-fx-background-color: #008000 ;" + "-fx-font-family: 'serif'");
@@ -281,7 +276,7 @@ public class JavaFXTemplate extends Application {
 		
 		startAndExit = new VBox(30, startGame, exitBetting);
 		startAndExit.setAlignment(Pos.CENTER);
-		bettingAmountAndRadio = new HBox(70, radioAndField, bettingAmountAndField);
+		bettingAmountAndRadio = new HBox(100, radioAndField, bettingAmountAndField);
 		bettingAmountAndRadio.setAlignment(Pos.CENTER);
 		vBoxBettingScene = new VBox(100, bettingAmountAndRadio, startAndExit);
 		vBoxBettingScene.setAlignment(Pos.CENTER);
