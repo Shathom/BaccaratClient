@@ -7,21 +7,23 @@ import java.util.function.Consumer;
 
 public class Client extends Thread {
 	Socket socketClient;
-	
+	String ipAddress;
+	int portNumber;
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	
 	private Consumer<Serializable> callback;
 	
-	Client(Consumer<Serializable> call){
-	
+	Client(Consumer<Serializable> call, int portNum, String ip){
+		this.portNumber = portNum;
+		this.ipAddress = ip;
 		callback = call;
 	}
 	
 	public void run() {
 		
 		try {
-			socketClient= new Socket("127.0.0.1",5555);
+			socketClient = new Socket(ipAddress,portNumber);
 			out = new ObjectOutputStream(socketClient.getOutputStream());
 			in = new ObjectInputStream(socketClient.getInputStream());
 			socketClient.setTcpNoDelay(true);
@@ -33,7 +35,9 @@ public class Client extends Thread {
 			try {
 				BaccaratInfo clientInfo = (BaccaratInfo)in.readObject();
 			}
-			catch(Exception e) {}
+			catch(Exception e) {
+				
+			}
 		}
 	
     }
