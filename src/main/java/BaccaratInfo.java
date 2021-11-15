@@ -8,8 +8,8 @@ public class BaccaratInfo implements Serializable {
 	public String bettingType;
 	public double bettingAmount;
 	public boolean quit;
-	public ArrayList<String> playerHand;
-	public ArrayList<String> bankerHand;
+	public ArrayList<String> playerHand = new ArrayList<String>();
+	public ArrayList<String> bankerHand = new ArrayList<String>();
 	public boolean naturalWin;
     public boolean playerDraw;
 	public boolean bankerDraw;
@@ -18,7 +18,6 @@ public class BaccaratInfo implements Serializable {
 	public String gameResult;
 	
 	BaccaratInfo() {
-		
 	}
 
 }
