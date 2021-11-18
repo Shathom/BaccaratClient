@@ -11,6 +11,8 @@ public class Client extends Thread {
 	int portNumber;
 	ObjectOutputStream out;
 	ObjectInputStream in;
+	public BaccaratInfo clientInfo;
+	boolean fresh = false;
 	
 	private Consumer<Serializable> callback;
 	
@@ -28,24 +30,46 @@ public class Client extends Thread {
 			in = new ObjectInputStream(socketClient.getInputStream());
 			socketClient.setTcpNoDelay(true);
 		}
-		catch(Exception e) {}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		while(true) {
 			 
 			try {
-				BaccaratInfo clientInfo = (BaccaratInfo)in.readObject();
+				this.clientInfo = (BaccaratInfo)in.readObject();
+				//System.out.println("information recieved back in client");
+		    	//System.out.println(clientInfo);
+				callback.accept(clientInfo);
+				//System.out.println(clientInfo.currentWinnings);
+				this.fresh = true;
+				
 			}
 			catch(Exception e) {
-				
+				e.printStackTrace();
 			}
 		}
 	
     }
 	
+	public BaccaratInfo getBaccaratInfo() {
+		while (!this.fresh) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		this.fresh = false;
+		return this.clientInfo;
+		
+	}
+	
 	public void send(BaccaratInfo clientInfo) {
 		
 		try {
 			out.writeObject(clientInfo);
+			System.out.println("information sent");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
