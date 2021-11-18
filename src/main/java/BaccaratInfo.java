@@ -19,5 +19,17 @@ public class BaccaratInfo implements Serializable {
 	
 	BaccaratInfo() {
 	}
+	
+//	public String toString() {
+//		
+//		System.out.println("In client toString");
+//		
+//		System.out.println("currentWinnings: " + currentWinnings);
+//		System.out.println("gameResult :" + gameResult);
+//		System.out.println("bettingType :" + bettingType);
+//		System.out.println("bettingAmount" + bettingAmount);
+//		
+//		return "";
+//	}
 
 }
