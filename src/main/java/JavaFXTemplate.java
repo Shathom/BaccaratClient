@@ -286,7 +286,7 @@ public class JavaFXTemplate extends Application {
 		results.setPrefWidth(100);
 		results.setPrefHeight(1000);
 		
-		results.setStyle("-fx-font-size: 1.5em;" + "-fx-background-radius: 20;");
+		results.setStyle("-fx-font-size: 1.5em;");
 		results.setFocusTraversable(false);
 		
 		currentWinnings.setStyle("-fx-font-size: 1.5em;" + "-fx-background-radius: 20;");
@@ -385,8 +385,9 @@ public class JavaFXTemplate extends Application {
 		
 		startNewGame.setOnAction(startNewGameHandler);
 		
+	   
+		Scene scene = new Scene(pane, 1300, 800);
 	
-		Scene scene = new Scene(pane, 1400, 900);
 		scene.getRoot().setStyle("-fx-background-color: #008000;" + "-fx-font-family: 'serif'");
 		return scene;
 		
@@ -455,8 +456,6 @@ public class JavaFXTemplate extends Application {
 			}
 		};
 		
-		
-		
 		startGame.setOnAction(startGameHandler);
 
 		
@@ -467,3 +466,5 @@ public class JavaFXTemplate extends Application {
 	}
 
 }
+
+//-fx-control-inner-background: blue;
