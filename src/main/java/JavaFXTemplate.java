@@ -34,19 +34,18 @@ public class JavaFXTemplate extends Application {
 	private Button connectToServer, exitBetting, startGame, startNewGame, exitGame, exit, tempButton;
     private Text resultsPmpt, currentWinningsPmpt, playerPmpt, bankerPmpt, bettingAmountPmpt, bettingTypePmpt, portNumberPmpt, ipAddressPmpt;
 	private HashMap<String, Scene> sceneMap;
-	private HashMap<String, String> cardImages;
 	private HBox portAndIP, connectAndExit, bettingAmountAndRadio, resultsAndButtons, playerCards, bankerCards, bothPlayers;
 	private VBox textAndBut, radioAndField, startAndExit, bettingAmountAndField, vBoxBettingScene, startNewGameAndExit, resultsAndCurrentWinnings, ipPromAndText, portPromAndText, resultsPrmp, currentWinningsPrmp, info, pCards, bCards, gScene;
 	private Client clientConnection;
 	private RadioButton player, banker, draw;
 	private ToggleGroup radioButtons;
-	PauseTransition pauseBeforeNaturalWinner = new PauseTransition(Duration.seconds(3));
-	PauseTransition pauseBeforeResult = new PauseTransition(Duration.seconds(3));
+	PauseTransition pauseBeforeNaturalWinner = new PauseTransition(Duration.seconds(6));
+	PauseTransition pauseBeforeNoNaturalWinner = new PauseTransition(Duration.seconds(6));
+	PauseTransition pauseBeforeUltimateResult = new PauseTransition(Duration.seconds(13));
 	PauseTransition pauseBeforeDealingcards = new PauseTransition(Duration.seconds(3));
-	PauseTransition pauseBeforePlayerDraw = new PauseTransition(Duration.seconds(3));
-	PauseTransition pauseBeforeBankerDraw = new PauseTransition(Duration.seconds(3));
-	PauseTransition pauseforEnteringGame = new PauseTransition(Duration.seconds(3));
-	private EventHandler<ActionEvent> startnewGameHandler, exitGameHandler, leaveServerhandler, startGameHandler, connectToServerHandler, temp;
+	PauseTransition pauseBeforePlayerDraw = new PauseTransition(Duration.seconds(7));
+	PauseTransition pauseBeforeBankerDraw = new PauseTransition(Duration.seconds(9));
+	private EventHandler<ActionEvent> startNewGameHandler, exitGameHandler, leaveServerhandler, startGameHandler, connectToServerHandler;
 	private Image player1, player2, banker1, banker2, player3, banker3;
 	private ImageView player1View, player2View, banker1View, banker2View, player3View, banker3View;
 	public BaccaratInfo data = new BaccaratInfo();
@@ -55,15 +54,6 @@ public class JavaFXTemplate extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
-//	private void checkClientConnection(String str) {
-//		if (clientConnection == null) {
-//			System.out.println(str + "client connection is null");
-//		} else {
-//			System.out.println(str + "client connection is not null");
-//		}
-//	}
-	
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -96,14 +86,16 @@ public class JavaFXTemplate extends Application {
             }
         });
 		
-		pauseforEnteringGame.setOnFinished(e->primaryStage.setScene(sceneMap.get("gameScene")));
+		pauseBeforeDealingcards.setOnFinished(e->updateGameScene());
 		
 		primaryStage.setScene(sceneMap.get("portAndIDScene"));
 
 		primaryStage.show(); 
 		
-		
-		
+		exit.setOnAction(e->primaryStage.close());
+		exitGame.setOnAction(e->primaryStage.close());
+		exitBetting.setOnAction(e->primaryStage.close());
+
 	}
 
 	
@@ -165,16 +157,105 @@ public class JavaFXTemplate extends Application {
 		};
 		
 		connectToServer.setOnAction(connectToServerHandler);
-		
-		exit.setOnAction(e ->Platform.exit());
         
-		
-		
 		Scene scene = new Scene(pane, 1000, 800);
 		scene.getRoot().setStyle("-fx-background-color: #008000 ;" + "-fx-font-family: 'serif'");
 		return scene;
 
 		
+	}
+	
+	public void updateGameScene() {
+		
+		
+		pauseBeforeDealingcards.play();
+		
+		pauseBeforeDealingcards.setOnFinished(e->{
+			player1 = new Image(data.playerHand.get(0));
+			player2 = new Image(data.playerHand.get(1));
+			player3 = new Image("card_back.jpeg");
+			
+			banker1 = new Image(data.bankerHand.get(0));
+			banker2 = new Image(data.bankerHand.get(1));
+			banker3 = new Image("card_back.jpeg");
+			
+			player1View.setImage(player1);
+			player2View.setImage(player2);
+			player3View.setImage(player3);
+			
+			banker1View.setImage(banker1);
+			banker2View.setImage(banker2);
+			banker3View.setImage(banker3);
+			
+		});
+		
+			if (data.naturalWin) {
+				pauseBeforeNaturalWinner.play();
+				pauseBeforeNaturalWinner.setOnFinished(e->{
+				if(data.bettingType.equals(data.gameResult)) {
+					String handTotals = "Player Total: " + data.playerHandTotal + " Banker Total: " + data.bankerHandTotal;
+					String congratsMessage = "Congradulations! You bet " + data.bettingType + "! " + " You have a natural win!!!";
+					results.getItems().add(handTotals);
+					results.getItems().add(congratsMessage);
+					currentWinnings.setText("Current Winnings: " + Double.toString(data.currentWinnings) + "    " + "Total Winnings: " + Double.toString(data.totalWinnings));
+				} else {
+					String handTotals = "Player Total: " + data.playerHandTotal + " Banker Total: " + data.bankerHandTotal;
+					String sorryMessage = data.gameResult + " has a natural win\n " + "Sorry, you bet " + data.bettingType + "!" + " You lost your bet :(";
+					results.getItems().add(handTotals);
+					results.getItems().add(sorryMessage);
+					currentWinnings.setText("Current Winnings: " + Double.toString(data.currentWinnings) + "    " + "Total Winnings: " + Double.toString(data.totalWinnings));
+				}
+				
+			  });
+				
+			} else {
+				
+				pauseBeforeNoNaturalWinner.play();
+				pauseBeforeNoNaturalWinner.setOnFinished(p->{
+					
+				String noNaturalMessage = "There was no natural winner";
+				results.getItems().add(noNaturalMessage);
+					
+				
+				if (data.playerDraw) {
+					pauseBeforePlayerDraw.play();
+					pauseBeforePlayerDraw.setOnFinished(e->{
+						String anotherCardPlayer = "Player gets another card";
+						results.getItems().add(anotherCardPlayer);
+						player3 = new Image(data.playerHand.get(2));
+						player3View.setImage(player3);
+					
+					});
+				}
+				if (data.bankerDraw) {
+					pauseBeforeBankerDraw.play();
+					pauseBeforeBankerDraw.setOnFinished(e->{
+						String anotherCardBanker = "Banker gets another card";
+						results.getItems().add(anotherCardBanker);
+						banker3 = new Image(data.bankerHand.get(2));
+						banker3View.setImage(banker3);
+					});
+				}
+				
+				pauseBeforeUltimateResult.play();
+				pauseBeforeUltimateResult.setOnFinished(e->{
+				if(data.bettingType.equals(data.gameResult)) {
+					String handTotals = "Player Total: " + data.playerHandTotal + " Banker Total: " + data.bankerHandTotal;
+					String congratsMessage = "Congradulations! You bet " + data.bettingType + "! " + "You won!!!";
+					results.getItems().add(handTotals);
+					results.getItems().add(congratsMessage);
+					currentWinnings.setText("Current Winnings: " + Double.toString(data.currentWinnings) + "    " + "Total Winnings: " + Double.toString(data.totalWinnings));
+				} else {
+					String handTotals = "Player Total: " + data.playerHandTotal + " Banker Total: " + data.bankerHandTotal;
+					String sorryMessage = data.gameResult + " won\n " + "Sorry, you bet " + data.bettingType + "!" + " You lost your bet :(";
+					results.getItems().add(handTotals);
+					results.getItems().add(sorryMessage);
+					currentWinnings.setText("Current Winnings: " + Double.toString(data.currentWinnings) + "    " + "Total Winnings: " + Double.toString(data.totalWinnings));
+				}
+				
+				});
+			});
+		}			
 	}
 	
 	public Scene createGameScene(Stage primaryStage) {
@@ -194,11 +275,12 @@ public class JavaFXTemplate extends Application {
 		bankerPmpt.setStyle("-fx-font-size: 2.0em;");
 		bankerPmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
-		currentWinningsPmpt = new Text("Current Winnings:");
+		currentWinningsPmpt = new Text("Winnings:");
 		currentWinningsPmpt.setStyle("-fx-font-size: 1.5em;");
 		currentWinningsPmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
-
+		results.setPrefWidth(100);
+		results.setPrefHeight(1000);
 		results.setStyle("-fx-font-size: 1.5em;");
 		results.setFocusTraversable(false);
 		
@@ -215,23 +297,24 @@ public class JavaFXTemplate extends Application {
 		tempButton = new Button("temp button");
 		tempButton.setStyle("-fx-font-size: 1.5em;");
 		
-		startNewGameAndExit = new VBox(20,startNewGame, exitGame, tempButton);
+		startNewGameAndExit = new VBox(20,startNewGame, exitGame);
 		startNewGameAndExit.setAlignment(Pos.BOTTOM_CENTER);
 		resultsAndCurrentWinnings = new VBox();
 		resultsPrmp = new VBox(10, resultsPmpt, results);
 		currentWinningsPrmp = new VBox(10, currentWinningsPmpt, currentWinnings);
-		info = new VBox(20,resultsPrmp, currentWinningsPrmp);
+		info = new VBox(70,resultsPrmp, currentWinningsPrmp);
+		info.setPrefSize(500, 500);
 		
 		resultsAndButtons = new HBox(300, info, startNewGameAndExit);
 		resultsAndButtons.setAlignment(Pos.CENTER);
 		
-		player1 = new Image(data.playerHand.get(0));
-		player2 = new Image(data.playerHand.get(1));
+		player1 = new Image("card_back.jpeg");
+		player2 = new Image("card_back.jpeg");
 		player3 = new Image("card_back.jpeg");
 		
 		
-		banker1 = new Image(data.bankerHand.get(0));
-		banker2 = new Image(data.bankerHand.get(1));
+		banker1 = new Image("card_back.jpeg");
+		banker2 = new Image("card_back.jpeg");
 		banker3 = new Image("card_back.jpeg");
 		
 		player1View = new ImageView(player1);
@@ -277,82 +360,33 @@ public class JavaFXTemplate extends Application {
 		pane.setCenter(gScene);
 		
 		
-	///////scene finished displaying here
+		startNewGameHandler = new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				primaryStage.setScene(sceneMap.get("bettingScene"));
+				results.getItems().clear();
+				currentWinnings.setText("");
+				
+				player1View.setImage(new Image("card_back.jpeg"));
+				player2View.setImage(new Image("card_back.jpeg"));
+				player3View.setImage(new Image("card_back.jpeg"));
+				
+				banker1View.setImage(new Image("card_back.jpeg"));
+				banker2View.setImage(new Image("card_back.jpeg"));
+				banker3View.setImage(new Image("card_back.jpeg"));
+				
+				
+				
+				
+			}
+		};
 		
 		
-//		// wait 3 seconds
-//		pauseBeforeDealingcards.play();
-//		
-//		// at the end of 3 seconds, update cards
-////		pauseBeforeDealingcards.setOnFinished(e->{
-////			player1 = new Image(data.playerHand.get(0));
-////			player2 = new Image(data.playerHand.get(1));
-////			banker1 = new Image(data.bankerHand.get(0));
-////			banker2 = new Image(data.bankerHand.get(1));
-////		});
-//		
-//		pauseBeforeNaturalWinner.play();
-//		
-//		pauseBeforeNaturalWinner.setOnFinished(e->{
-//			
-////			String naturalWinMessage = "Player data.gameResult + " won a natural win! Congrats!!"
-////			results.getItems().add(naturalWinMessage);
-//		});
-//		
-//		pauseBeforePlayerDraw.play();
-//		
-//		pauseBeforePlayerDraw.setOnFinished(e->{
-//			// do things
-//		});
-//		
-//		pauseBeforeBankerDraw.play();
-//		
-//		pauseBeforeBankerDraw.setOnFinished(e->{
-//			// do things
-//		});
-//		
-//		
-		//pauseBeforeResult.play();
-		
-//		pauseBeforeResult.setOnFinished(e->{
-//			currentWinnings.setText(Double.toString(data.currentWinnings));
-//			results.getItems().add(data.gameResult);
-//		});
-		
-//		// then put another handler for reseting the game
-		
-		
-		exitGame.setOnAction(e ->Platform.exit());
+		startNewGame.setOnAction(startNewGameHandler);
 		
 	
-		Scene scene = new Scene(pane, 1200, 900);
+		Scene scene = new Scene(pane, 1300, 900);
 		scene.getRoot().setStyle("-fx-background-color: #008000;" + "-fx-font-family: 'serif'");
 		return scene;
-		
-	}
-	
-	public void updateGameScene() {
-		
-		results.getItems().add(data.gameResult);
-		
-		currentWinnings.setText(Double.toString(data.currentWinnings));
-		
-		player1 = new Image(data.playerHand.get(0));
-		player2 = new Image(data.playerHand.get(1));
-		player3 = new Image("card_back.jpeg");
-		
-		
-		banker1 = new Image(data.bankerHand.get(0));
-		banker2 = new Image(data.bankerHand.get(1));
-		banker3 = new Image("card_back.jpeg");
-		
-		player1View.setImage(player1);
-		player2View.setImage(player2);
-		player3View.setImage(player3);
-		
-		banker1View.setImage(banker1);
-		banker2View.setImage(banker2);
-		banker3View.setImage(banker3);
 		
 	}
 	
@@ -411,19 +445,16 @@ public class JavaFXTemplate extends Application {
 				data.bettingAmount = Integer.parseInt(bettingAmount.getText());
 				clientConnection.send(data);
 				data = clientConnection.getBaccaratInfo();
-				updateGameScene();
 				primaryStage.setScene(sceneMap.get("gameScene"));
-				//pauseforEnteringGame.play();
-				
+				updateGameScene();
+	
 			}
 		};
 		
 		
 		
 		startGame.setOnAction(startGameHandler);
-		exitBetting.setOnAction(e ->Platform.exit());
 
-		
 		
 		Scene scene = new Scene(pane, 1000, 900);
 		scene.getRoot().setStyle("-fx-background-color: #008000 ;" + "-fx-font-family: 'serif'");
