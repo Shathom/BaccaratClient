@@ -16,6 +16,8 @@ public class BaccaratInfo implements Serializable {
 	public double totalWinnings;
 	public double currentWinnings;
 	public String gameResult;
+	public int playerHandTotal;
+	public int bankerHandTotal;
 	
 	BaccaratInfo() {
 	}
@@ -28,6 +30,8 @@ public class BaccaratInfo implements Serializable {
 //		System.out.println("gameResult :" + gameResult);
 //		System.out.println("bettingType :" + bettingType);
 //		System.out.println("bettingAmount" + bettingAmount);
+//		System.out.println("playerHandTotal: + playerHandTotal");
+//		System.out.println("bankerHandTotal: + bankerHandTotal");
 //		
 //		return "";
 //	}
