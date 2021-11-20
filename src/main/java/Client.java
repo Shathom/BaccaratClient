@@ -38,10 +38,7 @@ public class Client extends Thread {
 			 
 			try {
 				this.clientInfo = (BaccaratInfo)in.readObject();
-				//System.out.println("information recieved back in client");
-		    	//System.out.println(clientInfo);
 				callback.accept(clientInfo);
-				//System.out.println(clientInfo.currentWinnings);
 				this.fresh = true;
 				
 			}
