@@ -31,7 +31,7 @@ public class JavaFXTemplate extends Application {
 	private TextField portNumber, ipAddress, bettingAmount;
 	private TextField currentWinnings = new TextField();
 	public ListView<String> results = new ListView<String>();
-	private Button connectToServer, exitBetting, startGame, startNewGame, exitGame, exit, tempButton;
+	private Button connectToServer, exitBetting, startGame, startNewGame, exitGame, exit;
     private Text resultsPmpt, currentWinningsPmpt, playerPmpt, bankerPmpt, bettingAmountPmpt, bettingTypePmpt, portNumberPmpt, ipAddressPmpt;
 	private HashMap<String, Scene> sceneMap;
 	private HBox portAndIP, connectAndExit, bettingAmountAndRadio, resultsAndButtons, playerCards, bankerCards, bothPlayers;
@@ -45,7 +45,7 @@ public class JavaFXTemplate extends Application {
 	PauseTransition pauseBeforeDealingcards = new PauseTransition(Duration.seconds(3));
 	PauseTransition pauseBeforePlayerDraw = new PauseTransition(Duration.seconds(7));
 	PauseTransition pauseBeforeBankerDraw = new PauseTransition(Duration.seconds(9));
-	private EventHandler<ActionEvent> startNewGameHandler, exitGameHandler, leaveServerhandler, startGameHandler, connectToServerHandler;
+	private EventHandler<ActionEvent> startNewGameHandler, leaveServerhandler, startGameHandler, connectToServerHandler;
 	private Image player1, player2, banker1, banker2, player3, banker3;
 	private ImageView player1View, player2View, banker1View, banker2View, player3View, banker3View;
 	public BaccaratInfo data = new BaccaratInfo();
@@ -105,17 +105,19 @@ public class JavaFXTemplate extends Application {
 		pane.setPadding(new Insets(70));
 		
 		portNumber = new TextField();
-		portNumber.setStyle("-fx-font-size: 1.5em;");
+		portNumber.setStyle("-fx-font-size: 1.5em;" + "-fx-background-radius: 20;");
 		portNumber.setFocusTraversable(false);
 		
 		ipAddress = new TextField();
-		ipAddress.setStyle("-fx-font-size: 1.5em;");
+		ipAddress.setStyle("-fx-font-size: 1.5em;" + "-fx-background-radius: 20;");
 		ipAddress.setFocusTraversable(false);
 		
 		connectToServer = new Button("Connect To Server");
-		connectToServer.setStyle("-fx-font-size: 1.5em;");
+		connectToServer.setStyle("-fx-font-size: 1.5em;" +"-fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44), linear-gradient(#ffea6a, #efaa22), linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%), linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9),rgba(255,255,255,0));" + "-fx-background-radius: 30;" + "-fx-background-insets: 0,1,2,3,0;" + "-fx-text-fill: #654b00;" + "-fx-font-weight: bold;");
+
 		exit = new Button("Exit");
-		exit.setStyle("-fx-font-size: 1.5em;");
+		exit.setStyle("-fx-font-size: 1.5em;" +"-fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44), linear-gradient(#ffea6a, #efaa22), linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%), linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9),rgba(255,255,255,0));" + "-fx-background-radius: 30;" + "-fx-background-insets: 0,1,2,3,0;" + "-fx-text-fill: #654b00;" + "-fx-font-weight: bold;");
+
 		
 		ipAddressPmpt = new Text("Please Enter IP Address:");
 		ipAddressPmpt.setStyle("-fx-font-size: 1.5em;");
@@ -284,18 +286,17 @@ public class JavaFXTemplate extends Application {
 		results.setStyle("-fx-font-size: 1.5em;");
 		results.setFocusTraversable(false);
 		
-		currentWinnings.setStyle("-fx-font-size: 1.5em;");
+		currentWinnings.setStyle("-fx-font-size: 1.5em;" + "-fx-background-radius: 20;");
 		currentWinnings.setFocusTraversable(false);
 		currentWinnings.setEditable(false);
 		
 		startNewGame = new Button("Start New Game");
-		startNewGame.setStyle("-fx-font-size: 1.5em;");
+		startNewGame.setStyle("-fx-font-size: 1.5em;" +"-fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44), linear-gradient(#ffea6a, #efaa22), linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%), linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9),rgba(255,255,255,0));" + "-fx-background-radius: 30;" + "-fx-background-insets: 0,1,2,3,0;" + "-fx-text-fill: #654b00;" + "-fx-font-weight: bold;");
 		
 		exitGame = new Button("Exit Game");
-		exitGame.setStyle("-fx-font-size: 1.5em;");
-		
-		tempButton = new Button("temp button");
-		tempButton.setStyle("-fx-font-size: 1.5em;");
+		exitGame.setStyle("-fx-font-size: 1.5em;" +"-fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44), linear-gradient(#ffea6a, #efaa22), linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%), linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9),rgba(255,255,255,0));" + "-fx-background-radius: 30;" + "-fx-background-insets: 0,1,2,3,0;" + "-fx-text-fill: #654b00;" + "-fx-font-weight: bold;");
+
+	
 		
 		startNewGameAndExit = new VBox(20,startNewGame, exitGame);
 		startNewGameAndExit.setAlignment(Pos.BOTTOM_CENTER);
@@ -372,10 +373,7 @@ public class JavaFXTemplate extends Application {
 				
 				banker1View.setImage(new Image("card_back.jpeg"));
 				banker2View.setImage(new Image("card_back.jpeg"));
-				banker3View.setImage(new Image("card_back.jpeg"));
-				
-				
-				
+				banker3View.setImage(new Image("card_back.jpeg"));	
 				
 			}
 		};
@@ -396,7 +394,7 @@ public class JavaFXTemplate extends Application {
 		pane.setPadding(new Insets(70));
 		
 		bettingAmount = new TextField();
-		bettingAmount.setStyle("-fx-font-size: 1.5em;");
+		bettingAmount.setStyle("-fx-font-size: 1.5em;" + "-fx-background-radius: 20;");
 		bettingAmount.setFocusTraversable(false);
 		
 		bettingAmountPmpt = new Text("Betting Amount:");
@@ -408,10 +406,12 @@ public class JavaFXTemplate extends Application {
 		bettingTypePmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
 		startGame = new Button("Start Game");
-		startGame.setStyle("-fx-font-size: 1.5em;");
+		startGame.setStyle("-fx-font-size: 1.5em;" +"-fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44), linear-gradient(#ffea6a, #efaa22), linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%), linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9),rgba(255,255,255,0));" + "-fx-background-radius: 30;" + "-fx-background-insets: 0,1,2,3,0;" + "-fx-text-fill: #654b00;" + "-fx-font-weight: bold;");
+
 		
 		exitBetting = new Button("Exit");
-		exitBetting.setStyle("-fx-font-size: 1.5em;");
+		exitBetting.setStyle("-fx-font-size: 1.5em;" +"-fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44), linear-gradient(#ffea6a, #efaa22), linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%), linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9),rgba(255,255,255,0));" + "-fx-background-radius: 30;" + "-fx-background-insets: 0,1,2,3,0;" + "-fx-text-fill: #654b00;" + "-fx-font-weight: bold;");
+
 		
 		radioButtons = new ToggleGroup();
 		player = new RadioButton("Player");
