@@ -4,12 +4,14 @@ import java.util.HashMap;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -120,11 +122,11 @@ public class JavaFXTemplate extends Application {
 
 		
 		ipAddressPmpt = new Text("Please Enter IP Address:");
-		ipAddressPmpt.setStyle("-fx-font-size: 1.5em;");
+		ipAddressPmpt.setStyle("-fx-font-size: 1.5em;" + "-fx-font-weight: bold;");
 		ipAddressPmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
 		portNumberPmpt = new Text("Please Enter Port Number:");
-		portNumberPmpt.setStyle("-fx-font-size: 1.5em;");
+		portNumberPmpt.setStyle("-fx-font-size: 1.5em;" + "-fx-font-weight: bold;");
 		portNumberPmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
 		ipPromAndText = new VBox(10, ipAddressPmpt, ipAddress);
@@ -199,13 +201,13 @@ public class JavaFXTemplate extends Application {
 					String congratsMessage = "Congradulations! You bet " + data.bettingType + "! " + " You have a natural win!!!";
 					results.getItems().add(handTotals);
 					results.getItems().add(congratsMessage);
-					currentWinnings.setText("Current Winnings: " + Double.toString(data.currentWinnings) + "    " + "Total Winnings: " + Double.toString(data.totalWinnings));
+					currentWinnings.setText("Current Winnings: $" + Double.toString(data.currentWinnings) + "    " + "Total Winnings: $" + Double.toString(data.totalWinnings));
 				} else {
 					String handTotals = "Player Total: " + data.playerHandTotal + " Banker Total: " + data.bankerHandTotal;
 					String sorryMessage = data.gameResult + " has a natural win\n " + "Sorry, you bet " + data.bettingType + "!" + " You lost your bet :(";
 					results.getItems().add(handTotals);
 					results.getItems().add(sorryMessage);
-					currentWinnings.setText("Current Winnings: " + Double.toString(data.currentWinnings) + "    " + "Total Winnings: " + Double.toString(data.totalWinnings));
+					currentWinnings.setText("Current Winnings: $" + Double.toString(data.currentWinnings) + "    " + "Total Winnings: $" + Double.toString(data.totalWinnings));
 				}
 				
 			  });
@@ -246,13 +248,13 @@ public class JavaFXTemplate extends Application {
 					String congratsMessage = "Congradulations! You bet " + data.bettingType + "! " + "You won!!!";
 					results.getItems().add(handTotals);
 					results.getItems().add(congratsMessage);
-					currentWinnings.setText("Current Winnings: " + Double.toString(data.currentWinnings) + "    " + "Total Winnings: " + Double.toString(data.totalWinnings));
+					currentWinnings.setText("Current Winnings: $" + Double.toString(data.currentWinnings) + "    " + "Total Winnings: $" + Double.toString(data.totalWinnings));
 				} else {
 					String handTotals = "Player Total: " + data.playerHandTotal + " Banker Total: " + data.bankerHandTotal;
 					String sorryMessage = data.gameResult + " won\n " + "Sorry, you bet " + data.bettingType + "!" + " You lost your bet :(";
 					results.getItems().add(handTotals);
 					results.getItems().add(sorryMessage);
-					currentWinnings.setText("Current Winnings: " + Double.toString(data.currentWinnings) + "    " + "Total Winnings: " + Double.toString(data.totalWinnings));
+					currentWinnings.setText("Current Winnings: $" + Double.toString(data.currentWinnings) + "    " + "Total Winnings: $" + Double.toString(data.totalWinnings));
 				}
 				
 				});
@@ -266,24 +268,25 @@ public class JavaFXTemplate extends Application {
 		pane.setPadding(new Insets(70));
 		
 		playerPmpt = new Text("Player");
-		playerPmpt.setStyle("-fx-font-size: 2.0em;");
+		playerPmpt.setStyle("-fx-font-size: 2.0em;" + "-fx-font-weight: bold;");
 		playerPmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
 		resultsPmpt = new Text("Results:");
-		resultsPmpt.setStyle("-fx-font-size: 1.5em;");
+		resultsPmpt.setStyle("-fx-font-size: 1.5em;" + "-fx-font-weight: bold;");
 		resultsPmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
 		bankerPmpt = new Text("Banker");
-		bankerPmpt.setStyle("-fx-font-size: 2.0em;");
+		bankerPmpt.setStyle("-fx-font-size: 2.0em;" + "-fx-font-weight: bold;");
 		bankerPmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
 		currentWinningsPmpt = new Text("Winnings:");
-		currentWinningsPmpt.setStyle("-fx-font-size: 1.5em;");
+		currentWinningsPmpt.setStyle("-fx-font-size: 1.5em;" + "-fx-font-weight: bold;");
 		currentWinningsPmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
 		results.setPrefWidth(100);
 		results.setPrefHeight(1000);
-		results.setStyle("-fx-font-size: 1.5em;");
+		
+		results.setStyle("-fx-font-size: 1.5em;" + "-fx-background-radius: 20;");
 		results.setFocusTraversable(false);
 		
 		currentWinnings.setStyle("-fx-font-size: 1.5em;" + "-fx-background-radius: 20;");
@@ -299,7 +302,7 @@ public class JavaFXTemplate extends Application {
 	
 		
 		startNewGameAndExit = new VBox(20,startNewGame, exitGame);
-		startNewGameAndExit.setAlignment(Pos.BOTTOM_CENTER);
+		startNewGameAndExit.setAlignment(Pos.CENTER);
 		resultsAndCurrentWinnings = new VBox();
 		resultsPrmp = new VBox(10, resultsPmpt, results);
 		currentWinningsPrmp = new VBox(10, currentWinningsPmpt, currentWinnings);
@@ -326,34 +329,35 @@ public class JavaFXTemplate extends Application {
 		banker2View = new ImageView(banker2);
 		banker3View = new ImageView(banker3);
 		
-		player1View.setFitHeight(200);
+		player1View.setFitHeight(250);
 		player1View.setFitWidth(175);
 		
-		player2View.setFitHeight(200);
+		player2View.setFitHeight(250);
 		player2View.setFitWidth(175);
 		
-		player3View.setFitWidth(200);
+		player3View.setFitWidth(250);
 		player3View.setFitWidth(175);
 		
-		banker1View.setFitHeight(200);
+		banker1View.setFitHeight(250);
 	    banker1View.setFitWidth(175);
 	    
-		banker2View.setFitHeight(200);
+		banker2View.setFitHeight(250);
 		banker2View.setFitWidth(175);
 		
-		banker3View.setFitWidth(200);
+		banker3View.setFitWidth(250);
 		banker3View.setFitWidth(175);
 		
 		
-		playerCards = new HBox(10, player1View, player2View, player3View);
+		playerCards = new HBox(20, player1View, player2View, player3View);
+		
 		pCards = new VBox(20, playerPmpt, playerCards);
 		pCards.setAlignment(Pos.CENTER);
 
-		bankerCards = new HBox(10, banker1View, banker2View, banker3View);
+		bankerCards = new HBox(20, banker1View, banker2View, banker3View);
 		bCards = new VBox(20, bankerPmpt, bankerCards);
 		bCards.setAlignment(Pos.CENTER);
 		
-		bothPlayers = new HBox(50, pCards, bCards);
+		bothPlayers = new HBox(60, pCards, bCards);
 		bothPlayers.setAlignment(Pos.CENTER);
 		
 		gScene = new VBox(50, bothPlayers, resultsAndButtons);
@@ -382,7 +386,7 @@ public class JavaFXTemplate extends Application {
 		startNewGame.setOnAction(startNewGameHandler);
 		
 	
-		Scene scene = new Scene(pane, 1300, 900);
+		Scene scene = new Scene(pane, 1400, 900);
 		scene.getRoot().setStyle("-fx-background-color: #008000;" + "-fx-font-family: 'serif'");
 		return scene;
 		
@@ -391,18 +395,18 @@ public class JavaFXTemplate extends Application {
 	public Scene createBettingScene(Stage primaryStage) {
 		
 		BorderPane pane = new BorderPane();
-		pane.setPadding(new Insets(70));
+		pane.setPadding(new Insets(60));
 		
 		bettingAmount = new TextField();
 		bettingAmount.setStyle("-fx-font-size: 1.5em;" + "-fx-background-radius: 20;");
 		bettingAmount.setFocusTraversable(false);
 		
 		bettingAmountPmpt = new Text("Betting Amount:");
-		bettingAmountPmpt.setStyle("-fx-font-size: 1.5em;");
+		bettingAmountPmpt.setStyle("-fx-font-size: 1.5em;" + "-fx-font-weight: bold;");
 		bettingAmountPmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
 		bettingTypePmpt = new Text("Betting Type:");
-		bettingTypePmpt.setStyle("-fx-font-size: 1.5em;");
+		bettingTypePmpt.setStyle("-fx-font-size: 1.5em;" + "-fx-font-weight: bold;");
 		bettingTypePmpt.setFill(javafx.scene.paint.Color.WHITE);
 		
 		startGame = new Button("Start Game");
@@ -415,11 +419,11 @@ public class JavaFXTemplate extends Application {
 		
 		radioButtons = new ToggleGroup();
 		player = new RadioButton("Player");
-		player.setStyle("-fx-font-size: 1.5em;" + "-fx-text-fill: white;");
+		player.setStyle("-fx-font-size: 1.5em;" + "-fx-text-fill: white;" + "-fx-font-weight: bold;");
 		banker = new RadioButton("Banker");
-		banker.setStyle("-fx-font-size: 1.5em;" + "-fx-text-fill: white;");
+		banker.setStyle("-fx-font-size: 1.5em;" + "-fx-text-fill: white;" +"-fx-font-weight: bold;");
 		draw = new RadioButton("Draw");
-		draw.setStyle("-fx-font-size: 1.5em;" + "-fx-text-fill: white;");
+		draw.setStyle("-fx-font-size: 1.5em;" + "-fx-text-fill: white;" + "-fx-font-weight: bold;");
 		
 		player.setToggleGroup(radioButtons);
 		banker.setToggleGroup(radioButtons);
