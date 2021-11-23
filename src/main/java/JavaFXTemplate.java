@@ -194,7 +194,6 @@ public class JavaFXTemplate extends Application {
 		});
 		
 			if (data.naturalWin) {
-				pauseBeforeNaturalWinner.play();
 				pauseBeforeNaturalWinner.setOnFinished(e->{
 				if(data.bettingType.equals(data.gameResult)) {
 					String handTotals = "Player Total: " + data.playerHandTotal + " Banker Total: " + data.bankerHandTotal;
@@ -211,10 +210,10 @@ public class JavaFXTemplate extends Application {
 				}
 				
 			  });
+				pauseBeforeNaturalWinner.play();
 				
 			} else {
 				
-				pauseBeforeNoNaturalWinner.play();
 				pauseBeforeNoNaturalWinner.setOnFinished(p->{
 					
 				String noNaturalMessage = "There was no natural winner";
@@ -222,7 +221,6 @@ public class JavaFXTemplate extends Application {
 					
 				
 				if (data.playerDraw) {
-					pauseBeforePlayerDraw.play();
 					pauseBeforePlayerDraw.setOnFinished(e->{
 						String anotherCardPlayer = "Player gets another card";
 						results.getItems().add(anotherCardPlayer);
@@ -230,18 +228,17 @@ public class JavaFXTemplate extends Application {
 						player3View.setImage(player3);
 					
 					});
+					pauseBeforePlayerDraw.play();
 				}
 				if (data.bankerDraw) {
-					pauseBeforeBankerDraw.play();
 					pauseBeforeBankerDraw.setOnFinished(e->{
 						String anotherCardBanker = "Banker gets another card";
 						results.getItems().add(anotherCardBanker);
 						banker3 = new Image(data.bankerHand.get(2));
 						banker3View.setImage(banker3);
 					});
+					pauseBeforeBankerDraw.play();
 				}
-				
-				pauseBeforeUltimateResult.play();
 				pauseBeforeUltimateResult.setOnFinished(e->{
 				if(data.bettingType.equals(data.gameResult)) {
 					String handTotals = "Player Total: " + data.playerHandTotal + " Banker Total: " + data.bankerHandTotal;
@@ -258,7 +255,9 @@ public class JavaFXTemplate extends Application {
 				}
 				
 				});
+				pauseBeforeUltimateResult.play();
 			});
+		   pauseBeforeNoNaturalWinner.play();	
 		}			
 	}
 	
@@ -413,7 +412,6 @@ public class JavaFXTemplate extends Application {
 		startGame = new Button("Start Game");
 		startGame.setStyle("-fx-font-size: 1.5em;" +"-fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44), linear-gradient(#ffea6a, #efaa22), linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%), linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9),rgba(255,255,255,0));" + "-fx-background-radius: 30;" + "-fx-background-insets: 0,1,2,3,0;" + "-fx-text-fill: #654b00;" + "-fx-font-weight: bold;");
 
-		
 		exitBetting = new Button("Exit");
 		exitBetting.setStyle("-fx-font-size: 1.5em;" +"-fx-background-color: linear-gradient(#ffd65b, #e68400),linear-gradient(#ffef84, #f2ba44), linear-gradient(#ffea6a, #efaa22), linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%), linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9),rgba(255,255,255,0));" + "-fx-background-radius: 30;" + "-fx-background-insets: 0,1,2,3,0;" + "-fx-text-fill: #654b00;" + "-fx-font-weight: bold;");
 
