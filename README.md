@@ -8,7 +8,7 @@ The files on this project can be downloaded to a local machine and run on text e
 
 You would also need to have the Apache Maven project manager installed in your machine to run the project.
 
-## How to Run the application
+## How to run the application
 
 If you are using an editor, you can enter the following in your command-line/terminal: 
 
