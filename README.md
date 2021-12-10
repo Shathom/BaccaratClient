@@ -18,6 +18,10 @@ mvn compile exec:java
 
 Or, if you are using an IDE. you can simply run the project as a Maven project in either Eclipse or IntelliJ
 
+## Demo
+
+![](Baccarat.gif)
+
 
 ## Built With
 
