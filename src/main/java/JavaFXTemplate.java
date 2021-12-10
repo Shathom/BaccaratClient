@@ -169,7 +169,7 @@ public class JavaFXTemplate extends Application {
 		
 	}
 	
-	public void updateGameScene() {
+	private void updateGameScene() {
 		
 		
 		pauseBeforeDealingcards.play();
