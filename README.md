@@ -20,7 +20,7 @@ Or, if you are using an IDE. you can simply run the project as a Maven project i
 
 ## Demo
 
-![](Baccarat.gif)
+![](BaccaratGame.gif)
 
 
 ## Built With
